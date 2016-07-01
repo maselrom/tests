@@ -34,6 +34,8 @@ public class PolindromTest
                 else
                     last--;
             }
+            if (first>=last)
+                return true;
         }
         return true;
     }
