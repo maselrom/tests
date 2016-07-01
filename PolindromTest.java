@@ -13,34 +13,15 @@ public class PolindromTest
         System.out.println(isPolindrom(" 4444 44444444444444444  cghgc    706957096794749"));
         System.out.println(isPolindrom("cffc "));
         System.out.println(isPolindrom(" cfhkfc "));
+        System.out.println(isPolindrom("4444444"));
+        System.out.println(isPolindrom(""));
     }
 
     private static boolean isPolindrom(String s)
     {
-        int polindromLength = 0;
-        int polindromCenter = 0;
-        //search gor a polindrom length except digits
-        for (int i = 0; i < s.length(); i++)
-        {
-            if (!Character.isDigit(s.charAt(i)))
-                polindromLength++;
-        }
-        //search for a polindrom center
-        int i = 0;
-        for (int y = 0; y < s.length(); y++)
-        {
-            if (!Character.isDigit(s.charAt(y)))
-            {
-                polindromCenter = y;
-                i++;
-                if (i == polindromLength / 2 + 1)
-                    break;
-            }
-        }
 
-        //checking
         int last = s.length() - 1;
-        for (int first = 0; first < polindromCenter; first++)
+        for (int first = 0; first < s.length()-1; first++)
         {
             if (!Character.isDigit(s.charAt(first)))
             {
