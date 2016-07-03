@@ -1,0 +1,71 @@
+package com.javarush.test.HeadAndLegs;
+
+import java.util.ArrayList;
+
+/**
+ * Created by roman_ma on 03.07.2016.
+ */
+public class HeadAndLegs
+{
+    private static final int LEGS_COUNT = 12;
+    private static final int STEP_COUNT = 150;
+    private static volatile int currentStep = 1;
+    private static ArrayList<Leg> legs = new ArrayList();
+    private static volatile boolean canDoStep = true;
+    private static Object lock = new Object();
+
+    public static void main(String[] args) throws InterruptedException
+    {
+
+        for (int i = 1; i <= LEGS_COUNT; i++)
+        {
+            legs.add(new Leg("Leg number " + i, i));
+        }
+        for (Leg leg : legs
+                )
+        {
+            leg.setDaemon(true);
+            leg.start();
+        }
+
+        while (currentStep <= STEP_COUNT)
+        {
+            synchronized (lock)
+            {
+                while (canDoStep)
+                    lock.wait();
+                currentStep++;
+                canDoStep = true;
+            }
+        }
+    }
+
+    public static class Leg extends Thread
+    {
+        private final int legNum;
+
+        public Leg(String name, int legNum)
+        {
+            super(name);
+            this.legNum = legNum;
+        }
+
+        @Override
+        public void run()
+        {
+            while (true)
+            {
+                if (canDoStep)
+                {
+                    if (legNum == (currentStep % LEGS_COUNT) || (legNum == LEGS_COUNT && currentStep % LEGS_COUNT == 0))
+                        synchronized (lock)
+                        {
+                            System.out.println(Thread.currentThread().getName() + ": do step #" + currentStep);
+                            canDoStep = false;
+                            lock.notifyAll();
+                        }
+                }
+            }
+        }
+    }
+}
