@@ -1,0 +1,54 @@
+package com.javarush.test.NumbersWithUnicDidgits;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+/**
+ * Created by roman_ma on 04.07.2016.
+ */
+public class NumbersWithUnicDigitsString
+{
+    static ArrayList<String> numSet = new ArrayList<String>(Arrays.asList("1","2","3","4","5","6","7","8","9"));
+    static String[] numbers = new String[]{"0","1","2","3","4","5","6","7","8","9"};
+
+
+
+    public static void main(String[] args) throws InterruptedException
+    {
+
+        int oldSize = 0;
+        for (int i = 0; i <= 10; i++)
+        {
+            {
+                System.out.println("I do       ----------------------   " + i);
+                int size = numSet.size();
+                for (int y = oldSize; y < size; y++)
+                {
+                    for (String stNum : numbers)
+                    {
+                        if (!numSet.get(y).contains(stNum))
+                        {
+                            {
+                                if (i == 10)
+                                {
+                                    try
+                                    {
+                                        Integer.parseInt(numSet.get(y) + stNum);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        break;
+                                    }
+                                }
+                                numSet.add(numSet.get(y)+stNum);
+                            }
+                        }
+                    }
+                }
+                oldSize = size;
+            }
+        }
+    }
+
+
+}
