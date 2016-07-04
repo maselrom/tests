@@ -1,5 +1,7 @@
 package com.javarush.test.NumbersWithUnicDidgits;
 
+import java.util.HashSet;
+
 /**
  * Created by roman_ma on 04.07.2016.
  */
@@ -9,7 +11,7 @@ public class NumbersWithUnicDigits
     {
         for (int i = 0; i < Integer.MAX_VALUE; i++)
         {
-            if (!containRepeatDigits(i))
+            if (!containRepeatDigitsHash(String.valueOf(i)))
             {
                 System.out.println(i);
             }
@@ -28,6 +30,24 @@ public class NumbersWithUnicDigits
                 if (prev % 10 == last)
                     return true;
             return containRepeatDigits(n / 10);
+        }
+    }
+
+    static boolean containRepeatDigitsHash(String n)
+    {
+        HashSet<Character> set = new HashSet();
+        if (n.length() < 2)
+            return false;
+        else
+        {
+            for (Character ch : n.toCharArray()
+                    )
+            {
+                if (!set.add(ch)) {
+                    return true;
+                }
+            }
+                return false;
         }
     }
 }
