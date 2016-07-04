@@ -1,53 +1,75 @@
 package com.javarush.test.NumbersWithUnicDidgits;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+
 
 /**
  * Created by roman_ma on 04.07.2016.
  */
 public class NumbersWithUnicDigits
 {
-    public static void main(String[] args)
+    static ArrayList<char[]> numSet = new ArrayList<>();
+    static char[] numbers = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+
+    static
     {
-        for (int i = 0; i < Integer.MAX_VALUE; i++)
-        {
-            if (!containRepeatDigitsHash(String.valueOf(i)))
-            {
-                System.out.println(i);
-            }
-        }
+        numSet.add(new char[]{'1'});
+        numSet.add(new char[]{'2'});
+        numSet.add(new char[]{'3'});
+        numSet.add(new char[]{'4'});
+        numSet.add(new char[]{'5'});
+        numSet.add(new char[]{'6'});
+        numSet.add(new char[]{'7'});
+        numSet.add(new char[]{'8'});
+        numSet.add(new char[]{'9'});
     }
 
-
-    static boolean containRepeatDigits(int n)
+    public static void main(String[] args) throws InterruptedException
     {
-        if (n < 10)
-            return false;
-        else
-        {
-            int last = n % 10;
-            for (int prev = n / 10; prev > 0; prev /= 10)
-                if (prev % 10 == last)
-                    return true;
-            return containRepeatDigits(n / 10);
-        }
-    }
 
-    static boolean containRepeatDigitsHash(String n)
-    {
-        HashSet<Character> set = new HashSet();
-        if (n.length() < 2)
-            return false;
-        else
+        int oldSize = 0;
+        for (int i = 0; i <= 10; i++)
         {
-            for (Character ch : n.toCharArray()
-                    )
             {
-                if (!set.add(ch)) {
-                    return true;
+                System.out.println("I do       ----------------------   " + i);
+                int size = numSet.size();
+                for (int y = oldSize; y < size; y++)
+                {
+                    for (char stNum : numbers)
+                    {
+                        if (!isCh(numSet.get(y), stNum))
+                        {
+                            {
+                                if (i == 10)
+                                {
+                                    try
+                                    {
+                                        Integer.parseInt(String.valueOf(numSet.get(y)) + stNum);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        break;
+                                    }
+                                }
+                                numSet.add((new String(numSet.get(y)) + stNum).toCharArray());
+                            }
+                        }
+                    }
                 }
+                oldSize = size;
             }
-                return false;
         }
     }
+
+    static boolean isCh(char[] ch, char c)
+    {
+        for (char cc : ch
+                )
+        {
+            if (cc == c)
+                return true;
+        }
+        return false;
+    }
+
 }
