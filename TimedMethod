@@ -1,6 +1,8 @@
 package com.javarush.test.polindromTest.TimedMethod;
 
-import java.util.Date;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by roman_ma on 05.07.2016.
@@ -9,42 +11,43 @@ public class Main
 {
     public static final int COUNT = 3;
     public static final Long PERIOD = 1_000L;
-    private static Long lastCall = 0L;
     private static int curCount = 0;
 
     public static void main(String[] args) throws InterruptedException
     {
-        System.out.println(timedMethod());
-        System.out.println(timedMethod());
-        System.out.println(timedMethod());
-        System.out.println(timedMethod());
-        Thread.sleep(100);
-        System.out.println(timedMethod());
-        Thread.sleep(1000);
-        System.out.println(timedMethod());
-        System.out.println(timedMethod());
-        System.out.println(timedMethod());
-        System.out.println(timedMethod());
+        int res = 0;
+        TimerTask timerTask = new MyCountReseter();
+        Timer timer = new Timer(true);
+        timer.scheduleAtFixedRate(timerTask, 0, PERIOD);
+
+        for (int i = 0; i < 300; i++)
+        {
+            if (timedMethod())
+                res++;
+            Thread.sleep(10);
+        }
+        System.out.println(res);
 
     }
 
     private static boolean timedMethod()
     {
 
-        Date startDate = new Date();
-        if (startDate.getTime() < lastCall + PERIOD)
-        {
-            if (++curCount > COUNT)
-            {
-                return false;
-            }
-            curCount++;
+        if (++curCount > COUNT)
+            return false;
+        else
             return true;
-        } else
+    }
+
+
+    public static class MyCountReseter extends TimerTask
+    {
+
+        @Override
+        public void run()
         {
             curCount = 0;
-            lastCall = startDate.getTime();
-            return true;
+            System.out.println("here");
         }
     }
 }
