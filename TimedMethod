@@ -1,9 +1,7 @@
 package com.javarush.test.polindromTest.TimedMethod;
 
 
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 /**
  * Created by roman_ma on 05.07.2016.
@@ -11,54 +9,65 @@ import java.util.TimerTask;
 public class Main
 {
     public static final int COUNT = 3;
-    public static final Long PERIOD = 1_000L;
-    private static int curCount = 0;
-    private static Timer timer = new Timer(true);
+    public static final long PERIOD = 1_000;
+    private static LinkedList<Long> callList = new LinkedList<Long>();
 
     public static void main(String[] args) throws InterruptedException
     {
         int res = 0;
-        int trys=0;
-        Date start =new Date();
+        int trys = 0;
+        Date start = new Date();
         for (int i = 0; i < 30; i++)
         {
             if (timedMethod())
-                trys++;
+            {
                 res++;
+            }
+            trys++;
             Thread.sleep(100);
         }
-        System.out.println(trys+" // "+res+" time elapsed: "+(new Date().getTime()-start.getTime()));
+        System.out.println(trys + " // " + res + " time elapsed: " + (new Date().getTime() - start.getTime()));
         res = 0;
-        trys=0;
-        start =new Date();
+        trys = 0;
+        start = new Date();
         for (int i = 0; i < 300; i++)
         {
             if (timedMethod())
-                trys++;
-            res++;
+            {
+                res++;
+            }
+            trys++;
+
             Thread.sleep(10);
         }
-        System.out.println(trys+" // "+res+" time elapsed: "+(new Date().getTime()-start.getTime()));
+        System.out.println(trys + " // " + res + " time elapsed: " + (new Date().getTime() - start.getTime()));
     }
 
     private static boolean timedMethod()
     {
-        if (curCount==0)
-            timer.schedule( new MyCountReseter(),PERIOD);
-        if (++curCount > COUNT)
-            return false;
-        else
-            return true;
-    }
-
-
-    public static class MyCountReseter extends TimerTask
-    {
-
-        @Override
-        public void run()
+        long res = 0;
+        Iterator it = callList.descendingIterator();
+        int i = 0;
+        long curtime = new Date().getTime();
+        while (it.hasNext())
         {
-            curCount = 0;
+            if ((long) it.next() > (curtime - PERIOD))
+            {
+                i++;
+                if (i >= COUNT)
+                {
+                    callList.add(new Date().getTime());
+                    return false;
+                }
+            }
+            else {
+                callList.add(new Date().getTime());
+                return true;
+            }
         }
+        callList.add(new Date().getTime());
+        return true;
     }
+
+
 }
