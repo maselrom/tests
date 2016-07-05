@@ -1,5 +1,8 @@
 package com.javarush.test.polindromTest.TimedMethod;
 
+/**
+ * Created by maselrom on 05.07.2016.
+ */
 
 import java.util.*;
 
@@ -10,7 +13,7 @@ public class Main
 {
     public static final int COUNT = 3;
     public static final long PERIOD = 1_000;
-    private static LinkedList<Long> callList = new LinkedList<Long>();
+    private static LinkedList<Long> callList = new LinkedList<>();
 
     public static void main(String[] args) throws InterruptedException
     {
@@ -26,6 +29,7 @@ public class Main
             trys++;
             Thread.sleep(100);
         }
+        Thread.sleep(1001);
         System.out.println(trys + " // " + res + " time elapsed: " + (new Date().getTime() - start.getTime()));
         res = 0;
         trys = 0;
@@ -45,22 +49,22 @@ public class Main
 
     private static boolean timedMethod()
     {
-        long res = 0;
         Iterator it = callList.descendingIterator();
         int i = 0;
-        long curtime = new Date().getTime();
+        long curtime = new Date().getTime() - PERIOD;
+
         while (it.hasNext())
         {
-            if ((long) it.next() > (curtime - PERIOD))
+            if (((long) it.next()) > (curtime))
             {
-                i++;
-                if (i >= COUNT)
+                if (++i >= COUNT)
                 {
-                    callList.add(new Date().getTime());
+
                     return false;
                 }
-            }
-            else {
+            } else
+            {
+
                 callList.add(new Date().getTime());
                 return true;
             }
