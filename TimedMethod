@@ -1,6 +1,7 @@
 package com.javarush.test.polindromTest.TimedMethod;
 
 
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -12,27 +13,38 @@ public class Main
     public static final int COUNT = 3;
     public static final Long PERIOD = 1_000L;
     private static int curCount = 0;
+    private static Timer timer = new Timer(true);
 
     public static void main(String[] args) throws InterruptedException
     {
         int res = 0;
-        TimerTask timerTask = new MyCountReseter();
-        Timer timer = new Timer(true);
-        timer.scheduleAtFixedRate(timerTask, 0, PERIOD);
-
+        int trys=0;
+        Date start =new Date();
+        for (int i = 0; i < 30; i++)
+        {
+            if (timedMethod())
+                trys++;
+                res++;
+            Thread.sleep(100);
+        }
+        System.out.println(trys+" // "+res+" time elapsed: "+(new Date().getTime()-start.getTime()));
+        res = 0;
+        trys=0;
+        start =new Date();
         for (int i = 0; i < 300; i++)
         {
             if (timedMethod())
-                res++;
+                trys++;
+            res++;
             Thread.sleep(10);
         }
-        System.out.println(res);
-
+        System.out.println(trys+" // "+res+" time elapsed: "+(new Date().getTime()-start.getTime()));
     }
 
     private static boolean timedMethod()
     {
-
+        if (curCount==0)
+            timer.schedule( new MyCountReseter(),PERIOD);
         if (++curCount > COUNT)
             return false;
         else
@@ -47,7 +59,6 @@ public class Main
         public void run()
         {
             curCount = 0;
-            System.out.println("here");
         }
     }
 }
