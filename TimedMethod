@@ -6,22 +6,35 @@ import java.util.Date;
  * Created by roman_ma on 05.07.2016.
  */
 public class Main
-{private static Long lastCall=0l;
+{
+    public static final int COUNT=3;
+    public static final Long PERIOD=1_000L;
+    private static Long lastCall=0L;
+    private static int curCount=0;
     public static void main(String[] args) throws InterruptedException
     {
         System.out.println(timedMethod());
         System.out.println(timedMethod());
+        System.out.println(timedMethod());
+        System.out.println(timedMethod());
         Thread.sleep(100);
         System.out.println(timedMethod());
-        Thread.sleep(1001);
+        Thread.sleep(1000);
         System.out.println(timedMethod());
 
     }
     private static boolean timedMethod(){
+
         Date startDate=new Date();
-        if (startDate.getTime()<lastCall+1_000l)
-            return false;
+        if (startDate.getTime()<lastCall+PERIOD){
+            if (++curCount>COUNT){
+                return false;
+            }
+            curCount++;
+           return true;
+        }
         else {
+            curCount=0;
             lastCall=startDate.getTime();
             return true;
         }
