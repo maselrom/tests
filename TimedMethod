@@ -7,10 +7,11 @@ import java.util.Date;
  */
 public class Main
 {
-    public static final int COUNT=3;
-    public static final Long PERIOD=1_000L;
-    private static Long lastCall=0L;
-    private static int curCount=0;
+    public static final int COUNT = 3;
+    public static final Long PERIOD = 1_000L;
+    private static Long lastCall = 0L;
+    private static int curCount = 0;
+
     public static void main(String[] args) throws InterruptedException
     {
         System.out.println(timedMethod());
@@ -21,21 +22,28 @@ public class Main
         System.out.println(timedMethod());
         Thread.sleep(1000);
         System.out.println(timedMethod());
+        System.out.println(timedMethod());
+        System.out.println(timedMethod());
+        System.out.println(timedMethod());
 
     }
-    private static boolean timedMethod(){
 
-        Date startDate=new Date();
-        if (startDate.getTime()<lastCall+PERIOD){
-            if (++curCount>COUNT){
+    private static boolean timedMethod()
+    {
+
+        Date startDate = new Date();
+        if (startDate.getTime() < lastCall + PERIOD)
+        {
+            if (++curCount > COUNT)
+            {
                 return false;
             }
             curCount++;
-           return true;
-        }
-        else {
-            curCount=0;
-            lastCall=startDate.getTime();
+            return true;
+        } else
+        {
+            curCount = 0;
+            lastCall = startDate.getTime();
             return true;
         }
     }
