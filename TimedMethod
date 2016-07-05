@@ -1,0 +1,29 @@
+package com.javarush.test.polindromTest.TimedMethod;
+
+import java.util.Date;
+
+/**
+ * Created by roman_ma on 05.07.2016.
+ */
+public class Main
+{private static Long lastCall=0l;
+    public static void main(String[] args) throws InterruptedException
+    {
+        System.out.println(timedMethod());
+        System.out.println(timedMethod());
+        Thread.sleep(100);
+        System.out.println(timedMethod());
+        Thread.sleep(1001);
+        System.out.println(timedMethod());
+
+    }
+    private static boolean timedMethod(){
+        Date startDate=new Date();
+        if (startDate.getTime()<lastCall+1_000l)
+            return false;
+        else {
+            lastCall=startDate.getTime();
+            return true;
+        }
+    }
+}
